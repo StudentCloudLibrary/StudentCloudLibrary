@@ -69,13 +69,14 @@ function LoginPage(props) {
        >
         <ul className="header-ul">
           <li id="logo">
-            <a href="https://www.leagueoflegends.com/ko-kr//">
-              <img style={{ width: '400px', marginLeft: '200px' }} src="image/test.png" alt="Soongsil University" />
+            <a href="https://github.com/StudentCloudLibrary/StudentCloudLibrary//">
+              <img style={{height: "70px", objectFit: "fill", }} src="image/test.png" alt="Soongsil University" />
             </a>
           </li>
-          <li><a>숭실대 제발 망해라</a></li>
-          <li id="vertical-line">|</li>
-          <li><a>김민욱</a></li>
+          <li><a style={{display: "block", color: "white"}}>Ubuntu</a></li>
+        </ul> 
+        <ul className="header-CentOS">
+          <li><a style={{display: "block", color: "white"}}>CentOS</a></li>
         </ul>
 
         <ul class="header-ul">

@@ -80,9 +80,9 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-top: 5%;
-  padding-left: 20%;
-  padding-right: 5%;
+  padding-top: 35%;
+  padding-left: 30%;
+  padding-right: 15%;
   padding-bottom: 10px;
 }
 #second_line{
@@ -112,9 +112,12 @@ ul > div{
 
 .didiv{
   background-color: #00af00;
+  text-align: center;
+  color: white;
   opacity: 80%;
   width: 200px;
   height: 170px;
+  padding: 10px;
 }
 
 .didiv:hover{

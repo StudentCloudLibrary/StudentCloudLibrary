@@ -40,13 +40,14 @@ function ServerRoomPage(props) {
         >
         <ul className="header-ul">
           <li id="logo">
-            <a href="https://www.leagueoflegends.com/ko-kr//">
-              <img style={{ height: '70px'}} src="image/test.png" alt="Soongsil University" />
+            <a href="https://github.com/StudentCloudLibrary/StudentCloudLibrary//">
+              <img style={{height: "70px", objectFit: "fill", }} src="image/test.png" alt="Soongsil University" />
             </a>
           </li>
-          <li><a>숭실대 제발 망해라</a></li>
-          <li id="vertical-line">|</li>
-          <li><a>김민욱</a></li>
+          <li><a style={{display: "block", color: "white"}}>Ubuntu</a></li>
+        </ul> 
+        <ul className="header-CentOS">
+          <li><a style={{display: "block", color: "white"}}>CentOS</a></li>
         </ul>
 
         <ul class="header-ul">
@@ -69,8 +70,30 @@ function ServerRoomPage(props) {
         alignItems: 'center',
         justifyContent: "space-between",
       }}>
-        <div id = "server1" onClick={onServerHandler} className='didiv'> Ubntu </div>
-        <div id = "server2" onClick={onServerHandler} className='didiv'></div>
+        <div id = "server1"  className='didiv'>
+          Ubuntu
+          <div id = "server1_1" onClick={onServerHandler} 
+            style={{
+              osition: "relative", 
+              backgroundColor: "white", 
+              width: "100%",
+              height: "80%",
+              opacity:"0.9",
+            }}>
+          </div>
+        </div>
+        <div id = "server2" onClick={onServerHandler} className='didiv'>
+          CentOS
+          <div id = "server2_1" onClick={onServerHandler} 
+            style={{
+              osition: "relative", 
+              backgroundColor: "white", 
+              width: "100%",
+              height: "80%",
+              opacity:"0.9",
+            }}>
+          </div>
+        </div>
       </ul>
     </div>
   );

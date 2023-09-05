@@ -67,6 +67,7 @@ function LandingPage() {
       style={{
         display: "flex",
         alignItems: 'center',
+        justifyContent: 'center',
         flexDirection:"column",
         width: '100%',
       }}
@@ -84,12 +85,15 @@ function LandingPage() {
       >
         <ul className="header-ul">
           <li id="logo">
-            <a href="https://www.leagueoflegends.com/ko-kr//">
+            <a href="https://github.com/StudentCloudLibrary/StudentCloudLibrary//">
               <img style={{height: "70px", objectFit: "fill", }} src="image/test.png" alt="Soongsil University" />
             </a>
           </li>
-          <li><a style={{display: "block"}}>코딩을케이크처럼쉽게먹는법 - 김민욱</a></li>
+          <li><a style={{display: "block", color: "white"}}>Ubuntu</a></li>
         </ul> 
+        <ul className="header-CentOS">
+          <li><a style={{display: "block", color: "white"}}>CentOS</a></li>
+        </ul>
         {
         1 === 1 // 로그인시 로그인, 아니면 로그아웃
         ? <button onClick={onLoginClickHandler}>로그인</button>
@@ -110,7 +114,6 @@ function LandingPage() {
       >
         <div
           style={{
-            display: 'flex',
             position: 'absolute',
             right: '-200px',
             bottom: '150px',
@@ -128,12 +131,6 @@ function LandingPage() {
 
         {/* PieChart */}
         <PieChart
-        style={{ 
-          display: "absolute",
-          flexDirection: "column", 
-          justifyContent: "center",
-          alignItems: "center",
-        }}
           data={[
           {
             value: memData,
