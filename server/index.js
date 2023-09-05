@@ -44,6 +44,7 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 const exec = require('child_process').exec;
 const fs = require('fs');
 const { isUtf8 } = require("buffer");
+const { log } = require("console");
 
 // 루트 디렉토리에 오면 Hello World를 출력하도록
 app.get("/", (req, res) => res.send("Hello World! 안녕하세요!"));
@@ -239,12 +240,79 @@ app.post('/docker/api/v1/run/', async (req, res) => {
     }
   });
 });
+// API: /docker/api/v1/run (POST)
+// 설명: POST 매서드를 이용하여 image와 path를 파싱하여 해당 path의 image를 run 하도록 수행.
+// 형식: post 안의 메시지 형식은 다음 { image: <image name>, path : [ "bash", "-c", "uname -s"] .. (예시)) 와 같다.
+app.post('/docker/api/v1/ssh-create/', async (req, res) => {
+  const os = req.body.os;
+  const name = req.body.name;
+  const containerName = `${os}_${name}`;
+  imageName = null;
 
+  console.log(os)
+  console.log(containerName)
+
+  if(os=="ubuntu") {
+    imageName = "rastasheep/ubuntu-sshd";
+  } else if (os == "centos") {
+    imageName = "";
+  } else {
+    console.log(`req.os가 올바르지 않음`);
+      return res.status(404).send(`os는 ubuntu/centos 중 하나 입니다.`);
+  }
+
+  const containerOptions = {
+    name : containerName,
+    Image: imageName,
+    HostConfig : {
+      PortBindings: {
+        '22/tcp':[{HostPort:'0'}]
+      }
+    }
+
+  };
+
+  docker.createContainer(containerOptions)
+  .then(() => {
+    console.log('컨테이너 실행됨.');
+    return res.status(200).json({ message: '컨테이너 실행됨.' });
+  })
+  .catch((err) => {
+    console.error('오류 발생:', err);
+    return res.status(400).json({ error: '오류 발생' });
+  }); 
+});
 
 app.post('/docker/api/v1/start/',async(req,res) => {
   try {
     // 클라이언트에서 전달된 데이터 추출
-    const { containerName } = req.body;
+    const { containerName } = req.body.containerName;
+
+    // 컨테이너 조회
+    const container = await docker.getContainer(containerName);
+
+    if (!container) {
+      console.log(`컨테이너 ${containerName} 찾을 수 없음`);
+      return res.status(404).send(`컨테이너 ${containerName} 찾을 수 없음`);
+    }
+
+    // 컨테이너 start
+    await container.start();
+
+    console.log(`컨테이너 ${containerName} 시작됨`);
+
+    res.send(`컨테이너 ${containerName} 시작됨`);
+  } catch (error) {
+    console.error('오류 발생:', error);
+    res.status(500).send('오류 발생');
+  }
+})
+app.post('/docker/api/v1/ssh-start/',async(req,res) => {
+  try {
+    // 클라이언트에서 전달된 데이터 추출
+    const name = req.body.name;
+    const os = req.body.os;
+    const containerName = `${os}_${name}`;
 
     // 컨테이너 조회
     const container = await docker.getContainer(containerName);
@@ -266,7 +334,6 @@ app.post('/docker/api/v1/start/',async(req,res) => {
   }
 })
 
-
 // API: /docker/api/v1/stop (POST)
 // 설명: POST 매서드를 이용하여 container name을 파싱하여 해당 컨테이너를 종료한다.
 // 형식: post 안의 메시지 형식은 다음 { 'containerName' : <containerName> } 와 같다.
@@ -274,6 +341,36 @@ app.post('/docker/api/v1/stop/', async (req, res) => {
   try {
     // 클라이언트에서 전달된 데이터 추출
     const { containerName } = req.body;
+
+    // 컨테이너 조회
+    const container = await docker.getContainer(containerName);
+
+    if (!container) {
+      console.log(`컨테이너 ${containerName} 찾을 수 없음`);
+      return res.status(404).send(`컨테이너 ${containerName} 찾을 수 없음`);
+    }
+
+    // 컨테이너 중지
+    await container.stop();
+
+    console.log(`컨테이너 ${containerName} 중지됨`);
+
+    res.send(`컨테이너 ${containerName} 중지됨`);
+  } catch (error) {
+    console.error('오류 발생:', error);
+    res.status(500).send('오류 발생');
+  }
+});
+
+// API: /docker/api/v1/stop (POST)
+// 설명: POST 매서드를 이용하여 container name을 파싱하여 해당 컨테이너를 종료한다.
+// 형식: post 안의 메시지 형식은 다음 { 'containerName' : <containerName> } 와 같다.
+app.post('/docker/api/v1/ssh-stop/', async (req, res) => {
+  try {
+    // 클라이언트에서 전달된 데이터 추출
+    const name = req.body.name;
+    const os = req.body.os;
+    const containerName = `${os}_${name}`;
 
     // 컨테이너 조회
     const container = await docker.getContainer(containerName);
@@ -327,6 +424,34 @@ app.post('/docker/api/v1/stop-all/', async (req, res) => {
 //     })
 //   });
 // });
+
+app.post('/docker/api/v1/ssh-connect', (req, res) => {
+
+  // 클라이언트에서 전달된 데이터 추출
+  const {name} = req.body;
+  const {os} = req.body;
+  const containerName = `${os}_${name}`;
+
+  console.log(`컨테이너 이름 : ${containerName}`);
+
+  if(!name & !os) {
+    return res.status(400).json({ error: 'os와 name이 요청에 포함되어야 합니다.' });
+  }
+
+  // 컨테이너의 SSH 포트를 확인하고 SSH 명령어 문자열을 생성합니다.
+  exec(`docker port ${containerName} 22`, (error, stdout) => {
+    if (error) {
+      return res.status(500).json({ error: '컨테이너의 SSH 포트를 가져오는 중 오류가 발생했습니다.' });
+    }
+
+    const sshPort = parseInt(stdout.trim().split(':')[1], 10);
+    const serverIP = "18.188.107.222"
+
+      // SSH 명령어 문자열을 반환합니다.
+      const sshCommand = `ssh ubuntu@${serverIP} -t 'ssh -p ${sshPort} root@localhost'`;
+      res.json({ sshCommand });
+  });
+});
 
 app.get('/docker/api/v1/server-status/', async (req, res) => {
   try {
