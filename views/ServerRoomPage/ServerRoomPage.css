@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+  font-family: "SUIT Variable", sans-serif;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+header {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 25px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  overflow: hidden;
+}
+
+.header-ul {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header-ul li {
+  font-size: 16px;
+  font-weight: 500;
+  color: #3a3a3a;
+  cursor: pointer;
+  height: 100%;
+}
+
+#logo {
+  width: 150px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 300px;
+}
+
+
+#vertical-line {
+  font-size: 20px;
+  color: #cacaca;
+}
+
+.header-ul li a {
+  text-decoration:solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1b1b1b;
+}
+
+#profile-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  object-fit: cover;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+#first_line{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 35%;
+  padding-left: 30%;
+  padding-right: 15%;
+  padding-bottom: 10px;
+}
+#second_line{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20%;
+  padding-right: 5%;
+  padding-bottom: 10px;
+  
+}
+#third_line{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20%;
+  padding-right: 5%;
+  padding-bottom: 10px;
+}
+
+ul > div{
+  border-radius: 25px;
+}
+
+
+.didiv{
+  background-color: #00af00;
+  text-align: center;
+  color: white;
+  opacity: 80%;
+  width: 200px;
+  height: 170px;
+  padding: 10px;
+}
+
+.didiv:hover{
+  background-color: #00af00;
+  opacity: 50%;
+}
+header {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 25px;
+}
+
+.header-ul {
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header-ul li {
+  font-size: 20px;
+  font-weight: 500;
+  color: #3a3a3a;
+  cursor: pointer;
+}
+.header-ul li a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+#ssu{
+  padding-top : 30px;
+  width : 40%;
+  height : 30%;
+  border: 10;
+  border-color: #3a3a3a;
+}
