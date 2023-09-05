@@ -218,7 +218,7 @@ app.get('/docker/api/v1/memory-stats', (req, res) => {
 // API: /docker/api/v1/run (POST)
 // 설명: POST 매서드를 이용하여 image와 path를 파싱하여 해당 path의 image를 run 하도록 수행.
 // 형식: post 안의 메시지 형식은 다음 { image: <image name>, path : [ "bash", "-c", "uname -s"] .. (예시)) 와 같다.
-app.post('/docker/api/v1/img-run/', async (req, res) => {
+app.post('/docker/api/v1/run/', async (req, res) => {
   const imageName = req.body.image;
   const pathArray = req.body.path;
   const containerName = req.body.name;
@@ -239,6 +239,32 @@ app.post('/docker/api/v1/img-run/', async (req, res) => {
     }
   });
 });
+
+
+app.post('/docker/api/v1/start/',async(req,res) => {
+  try {
+    // 클라이언트에서 전달된 데이터 추출
+    const { containerName } = req.body;
+
+    // 컨테이너 조회
+    const container = await docker.getContainer(containerName);
+
+    if (!container) {
+      console.log(`컨테이너 ${containerName} 찾을 수 없음`);
+      return res.status(404).send(`컨테이너 ${containerName} 찾을 수 없음`);
+    }
+
+    // 컨테이너 start
+    await container.start();
+
+    console.log(`컨테이너 ${containerName} 시작됨`);
+
+    res.send(`컨테이너 ${containerName} 시작됨`);
+  } catch (error) {
+    console.error('오류 발생:', error);
+    res.status(500).send('오류 발생');
+  }
+})
 
 
 // API: /docker/api/v1/stop (POST)
