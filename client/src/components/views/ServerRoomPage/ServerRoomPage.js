@@ -29,6 +29,7 @@ function ServerRoomPage(props) {
   return (
     <div>
         <header
+
         style={{
           display: "flex",
           justifyContent: "space-between",
