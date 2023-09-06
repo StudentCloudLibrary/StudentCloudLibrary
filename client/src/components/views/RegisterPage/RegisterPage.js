@@ -4,6 +4,7 @@ import { registerUser } from "../../../_actions/user_action";
 import {useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import './RegisterPage.css';
+import { createContainer } from "../../../_actions/docker_action";
 
 function RegisterPage(props) {
 
@@ -59,6 +60,18 @@ function RegisterPage(props) {
     dispatch(registerUser(body))
       .then((response) => {
         if (response.payload.success) {
+          body = {
+            name : Name,
+            os : "ubuntu"
+          }
+          createContainer(body);
+
+          body = {
+            name : Name,
+            os : "centos"
+          }
+          createContainer(body);
+
           navigate("/login");
         } else {
           alert("Failed to sign up");
