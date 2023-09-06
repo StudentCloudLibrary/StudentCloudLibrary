@@ -2,6 +2,7 @@ import './ServerRoomPage.css';
 import React, {useState} from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { startContainer } from '../../../_actions/docker_action';
 
 function ServerRoomPage(props) {
   const navigate = useNavigate();
@@ -23,7 +24,30 @@ function ServerRoomPage(props) {
   function onLandingHandler() {
           navigate("/");
       };
-  function onServerHandler () {
+  function onUbuntuServerHandler () {
+    axios.get('/api/users/auth')
+    .then(response => {
+
+    let body = {
+      "os" : "ubuntu",
+      "name" : response.data.name
+    }
+    console.log(JSON.stringify(body));
+    startContainer(body);
+  });
+    navigate("/terminal");
+  };
+  function onCentosServerHandler () {
+    axios.get('/api/users/auth')
+    .then((response) => {
+      let body = {
+        "os" : "centos",
+        "name" : response.name
+      }
+  
+      startContainer(body);
+    });
+
     navigate("/terminal");
   };
   return (
@@ -73,7 +97,7 @@ function ServerRoomPage(props) {
       }}>
         <div id = "server1"  className='didiv'>
           Ubuntu
-          <div id = "server1_1" onClick={onServerHandler} 
+          <div id = "server1_1" onClick={onUbuntuServerHandler} 
             style={{
               osition: "relative", 
               backgroundColor: "white", 
@@ -83,9 +107,9 @@ function ServerRoomPage(props) {
             }}>
           </div>
         </div>
-        <div id = "server2" onClick={onServerHandler} className='didiv'>
+        <div id = "server2" onClick={onCentosServerHandler} className='didiv'>
           CentOS
-          <div id = "server2_1" onClick={onServerHandler} 
+          <div id = "server2_1" onClick={onCentosServerHandler} 
             style={{
               osition: "relative", 
               backgroundColor: "white", 

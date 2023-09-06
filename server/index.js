@@ -255,7 +255,7 @@ app.post('/api/docker/v1/ssh-create/', async (req, res) => {
   if(os=="ubuntu") {
     imageName = "rastasheep/ubuntu-sshd";
   } else if (os == "centos") {
-    imageName = "";
+    imageName = "jdeathe/centos-ssh";
   } else {
     console.log(`req.os가 올바르지 않음`);
       return res.status(404).send(`os는 ubuntu/centos 중 하나 입니다.`);
@@ -428,8 +428,8 @@ app.post('/api/docker/v1/stop-all/', async (req, res) => {
 app.post('/api/docker/v1/ssh-connect', (req, res) => {
 
   // 클라이언트에서 전달된 데이터 추출
-  const {name} = req.body;
-  const {os} = req.body;
+  const name = req.body.name;
+  const os = req.body.os;
   const containerName = `${os}_${name}`;
 
   console.log(`컨테이너 이름 : ${containerName}`);
@@ -445,10 +445,11 @@ app.post('/api/docker/v1/ssh-connect', (req, res) => {
     }
 
     const sshPort = parseInt(stdout.trim().split(':')[1], 10);
-    const serverIP = "3.14.11.216"
+    const serverIP = "localhost"
 
       // SSH 명령어 문자열을 반환합니다.
-      const sshCommand = `ssh ubuntu@${serverIP} -t 'ssh -p ${sshPort} root@localhost'`;
+      const sshCommand = `ssh ssu20202905@${serverIP} -t 'ssh -p ${sshPort} root@localhost'`;
+      console.log(sshCommand);
       res.json({ sshCommand });
   });
 });

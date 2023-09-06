@@ -11,9 +11,9 @@ function LandingPage() {
   const [containerUsage, setContainerUsage] = useState(0);
 
   useEffect(() => {
-    axios.get('/docker/api/v1/state/')
+    axios.get('/api/docker/v1/num-container/')
       .then(response => {
-        const memData = parseFloat(response.data.mem);
+        const memData = parseFloat(response.data.count)*10;
         setMemData(memData);
 
         setChartData([
@@ -94,11 +94,10 @@ function LandingPage() {
         <ul className="header-CentOS">
           <li><a style={{display: "block", color: "white"}}>CentOS</a></li>
         </ul>
-        {
-        1 === 1 // 로그인시 로그인, 아니면 로그아웃
-        ? <button onClick={onLoginClickHandler}>로그인</button>
-        : <button onClick={onLogoutClickHandler}>로그아웃</button>
-        }
+        
+         <button onClick={onLoginClickHandler}>로그인</button>
+         <button onClick={onLogoutClickHandler}>로그아웃</button>
+        
         <ul className="header-ul">
           <li>
             <img src="https://i.pinimg.com/564x/7a/c4/ed/7ac4edd64a67fccd0e2d547a9ffde845.jpg" id="profile-img" alt="profile" />
