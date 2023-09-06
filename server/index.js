@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { User } = require("./models/User");
 const { auth } = require("./middleware/auth");
-const Docker = require("dockerode");
+const Docker = require("dockerode");4
 
 const config = require("./config/key");
 // config/key.js에서 production에 따른 URI 참조 방식을
@@ -445,7 +445,7 @@ app.post('/api/docker/v1/ssh-connect', (req, res) => {
     }
 
     const sshPort = parseInt(stdout.trim().split(':')[1], 10);
-    const serverIP = "18.188.107.222"
+    const serverIP = "3.14.11.216"
 
       // SSH 명령어 문자열을 반환합니다.
       const sshCommand = `ssh ubuntu@${serverIP} -t 'ssh -p ${sshPort} root@localhost'`;
